@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkyCast</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="masthead">
+    <h1>SkyCast</h1>
+    <p class="sub">A machine-learning weather forecast for <strong id="loc">Urbana, IL</strong>, trained on 30+ years of local history.</p>
+    <p class="meta" id="issued"></p>
+  </header>
+
+  <section aria-labelledby="fc-h">
+    <h2 id="fc-h">Next 3 days</h2>
+    <div class="cards" id="cards"><p class="muted">Loading forecast…</p></div>
+  </section>
+
+  <section aria-labelledby="bt-h">
+    <div class="section-head">
+      <h2 id="bt-h">Recent track record</h2>
+      <div class="seg" role="group" aria-label="Variable">
+        <button type="button" data-bt="tmax" aria-pressed="true">High</button>
+        <button type="button" data-bt="tmin" aria-pressed="false">Low</button>
+      </div>
+    </div>
+    <p class="muted" id="bt-caption"></p>
+    <div class="chart" id="bt-chart"></div>
+  </section>
+
+  <section aria-labelledby="sk-h">
+    <div class="section-head">
+      <h2 id="sk-h">Does it beat simple guesses?</h2>
+      <div class="seg" role="group" aria-label="Variable">
+        <button type="button" data-sk="tmax" aria-pressed="true">High</button>
+        <button type="button" data-sk="tmin" aria-pressed="false">Low</button>
+      </div>
+    </div>
+    <p class="muted">Average error in °F on held-out days (lower is better). <em>Persistence</em> guesses tomorrow will match today; <em>climatology</em> guesses the historical normal for that date.</p>
+    <div class="legend" id="sk-legend"></div>
+    <div class="chart" id="sk-chart"></div>
+    <div class="table-wrap"><table id="sk-table"></table></div>
+  </section>
+
+  <section aria-labelledby="rn-h">
+    <h2 id="rn-h">Rain or no rain</h2>
+    <p class="muted">Brier skill score versus climatology: 0 means no better than the historical rain frequency, higher is better, and negative is worse.</p>
+    <div class="table-wrap"><table id="rn-table"></table></div>
+  </section>
+
+  <section aria-labelledby="ab-h" class="about">
+    <h2 id="ab-h">How it works</h2>
+    <ul>
+      <li><strong>Data:</strong> daily ERA5 reanalysis from Open-Meteo since 1990 for Urbana plus four upstream points (Peoria, Springfield, Davenport and St. Louis), because weather here mostly arrives from the west.</li>
+      <li><strong>Features:</strong> the last week of temperature, dew point, pressure and its trend, clouds, wind and rain, along with the season.</li>
+      <li><strong>Models:</strong> regularized linear models and gradient-boosted trees, one per variable and lead time. The one with the lower test error is used.</li>
+      <li><strong>Honest testing:</strong> models train on days before <span id="test-start">2021</span> and are scored only on later days they never saw.</li>
+    </ul>
+    <p class="muted">Built by Adrit, Alex, Nikhil, Linh and Peter.</p>
+  </section>
+</main>
+<div class="tip" id="tip" role="status" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
